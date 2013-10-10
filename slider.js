@@ -39,48 +39,6 @@ $.fn.slider = function() {
         }
         return false;
     });
-}
 
-function getVisibleItem(items) {
-    var visible_item;
-        $(items).each(function() {
-            if ($(this).is(':visible')) {
-                 visible_item = this;
-            }
-        });
-    return visible_item;
-}
 
-function getPreviousItem(visible_item) {
-    var i = $(visible_item).prev();
-    if (i.is('li')) {
-        return i;
-    } else {
-        return null;
-    }
-}
-
-$.fn.slide = function(req) {
-    if (req === 'next') {
-        if ($(this).next().is('li')) {
-                $(this).hide('slide', {direction: 'left'}, 700).queue(function() {
-                    $(this).next().closest('li').show('slide', {direction: 'right'}, 700);
-                });
-        }
-    }else if (req === 'prev') {
-            var prev = getPreviousItem($(this));
-            if (prev){
-                $(this).hide('slide', {direction: 'right'}, 700, function () {
-                $(this).stop();
-            }).queue(function() {
-                $(prev).stop(true,true).show('slide', {direction: 'left'}, 700);
-            });
-        }
-    }else {
-        $(this).hide('slide', {direction: 'left'}, 700, function () {
-            $(this).stop();
-        }).queue(function() {
-            $(req).show('slide', {direction: 'right'}, 700);
-        });
-    }
 }
