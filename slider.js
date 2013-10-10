@@ -81,29 +81,3 @@ $.fn.slider = function() {
 
 
 }
-
-$.fn.toSliderPage = function(page) {
-    $("html, body").animate({ scrollTop: $('#blog').offset().top }, 1000);
-    var list = this.find('ul'),
-    items = list.find('li')
-    itemCount = items.length,
-    requested_item = $(items[page-1]);
-    var visible_item;
-        $(items).each(function() {
-            if ($(this).is(':visible')) {
-                 visible_item = this;
-            }
-        });
-    if ((requested_item.index() + 1) > page) {
-                $(visible_item).hide('slide', {direction: 'left'}, 700).queue(function() {
-                $(requested_item).show('slide', {direction: 'right'}, 700);
-            });
-            } else {
-               $(visible_item).hide('slide', {direction: 'right'}, 700, function () {
-                   $(this).stop();
-               }).queue(function() {
-                   $(requested_item).stop(true,true).show('slide', {direction: 'left'}, 700);
-               });
-            }
-
-}
