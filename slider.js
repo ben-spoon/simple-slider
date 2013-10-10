@@ -20,90 +20,67 @@ $.fn.slider = function() {
 
     $(items[0]).show();
     this.find('.next').on('click', function() {
-        var visible_item;
-        $(items).each(function() {
-            if ($(this).is(':visible')) {
-                 visible_item = this;
-            }
-        });
-        if ($(visible_item).next().is('li')){
-            $(visible_item).hide('slide', {direction: 'left'}, 700).queue(function() {
-                $(visible_item).next().closest('li').show('slide', {direction: 'right'}, 700);
-            });
-        }
+        var visible_item = getVisibleItem(items);
+        $(visible_item).slide('next');
         return false;           
     });
     this.find('.prev').on('click', function() {
-        var visible_item;
-        var previous_entry;
-        $(items).each(function() {
-            if ($(this).is(':visible')) {
-                 visible_item = this;
-                 previous_entry = $(visible_item).prev();
-            }
-        });
-        
-        if (previous_entry.is('li')){
-            $(visible_item).hide('slide', {direction: 'right'}, 700, function () {
-                $(this).stop();
-            }).queue(function() {
-                $(previous_entry).stop(true,true).show('slide', {direction: 'left'}, 700);
-            });
-        }
+        var visible_item = getVisibleItem(items);
+        $(visible_item).slide('prev');
         return false;           
     });
     this.find('.sliderPagination-num').on('click', function() {
         var page_num = $(this).text(),
             requested_item = $(items[page_num-1]),
-            cur_pageNum,
-            visible_item;
-        $(items).each(function() {
-            if ($(this).is(':visible')) {
-                 visible_item = this;
-            }
-        });
+            visible_item = getVisibleItem(items);
+
         if (requested_item[0] !== visible_item) {
-            if ((requested_item.index() + 1) > page_num) {
-                $(visible_item).hide('slide', {direction: 'left'}, 700).queue(function() {
-                $(requested_item).show('slide', {direction: 'right'}, 700);
-            });
-            } else {
-               $(visible_item).hide('slide', {direction: 'right'}, 700, function () {
-                   $(this).stop();
-               }).queue(function() {
-                   $(requested_item).stop(true,true).show('slide', {direction: 'left'}, 700);
-               });
-            }
-            
+            $(visible_item).slide(requested_item);            
         }
         return false;
     });
-
-
 }
 
-$.fn.toSliderPage = function(page) {
-    $("html, body").animate({ scrollTop: $('#blog').offset().top }, 1000);
-    var list = this.find('ul'),
-    items = list.find('li')
-    itemCount = items.length,
-    requested_item = $(items[page-1]);
+function getVisibleItem(items) {
     var visible_item;
         $(items).each(function() {
             if ($(this).is(':visible')) {
                  visible_item = this;
             }
         });
-    if ((requested_item.index() + 1) > page) {
-                $(visible_item).hide('slide', {direction: 'left'}, 700).queue(function() {
-                $(requested_item).show('slide', {direction: 'right'}, 700);
-            });
-            } else {
-               $(visible_item).hide('slide', {direction: 'right'}, 700, function () {
-                   $(this).stop();
-               }).queue(function() {
-                   $(requested_item).stop(true,true).show('slide', {direction: 'left'}, 700);
-               });
-            }
+    return visible_item;
+}
 
+function getPreviousItem(visible_item) {
+    var i = $(visible_item).prev();
+    if (i.is('li')) {
+        return i;
+    } else {
+        return null;
+    }
+}
+
+$.fn.slide = function(req) {
+    if (req === 'next') {
+        if ($(this).next().is('li')) {
+                $(this).hide('slide', {direction: 'left'}, 700).queue(function() {
+                    $(this).next().closest('li').show('slide', {direction: 'right'}, 700);
+                });
+        }
+    }else if (req === 'prev') {
+            var prev = getPreviousItem($(this));
+            if (prev){
+                $(this).hide('slide', {direction: 'right'}, 700, function () {
+                $(this).stop();
+            }).queue(function() {
+                $(prev).stop(true,true).show('slide', {direction: 'left'}, 700);
+            });
+        }
+    }else {
+        $(this).hide('slide', {direction: 'left'}, 700, function () {
+            $(this).stop();
+        }).queue(function() {
+            $(req).show('slide', {direction: 'right'}, 700);
+        });
+    }
 }
