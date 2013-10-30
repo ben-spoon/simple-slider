@@ -5,9 +5,8 @@
  * http://www.benspon.com
  */
 
-.slider                 { list-style: none; margin:0; padding:0; height:80%; }
-.slider li              { display:none; margin:1% 1%;  }
-.slider img             { height:100%;}
+.slider                 { list-style: none; margin:0 !important; padding:0; min-height:80%; }
+.slider li              { display:none ; margin:1% 1% !important;  }
 
 .sliderPagination       { width:100%; text-align: center; }
 .sliderPagination a     { margin:0 1%; text-decoration: none; }
@@ -19,7 +18,7 @@
 .sub-title              { font-size: 1em; clear:both; display:block; margin-left: 1%; font-style: italic; } 
 .slide-title            { font-size: 1.5em; clear:both; display:block; font-weight: 800; margin-bottom:1%; }
 .slide-body             { }
-.slide-body p           { padding-left: 2%; width:80%; }
+.slide-body p           { padding-left: 2%; width:80%;}
 
 .boxed                  { background-color: #000; color:#FFF; width:50%; box-shadow: 10px 10px 5px #888888; padding:1%; }
 
